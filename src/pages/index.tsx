@@ -1,23 +1,23 @@
 import { type NextPage } from "next";
 import Head from "next/head";
+import { useState } from "react";
 import { api } from "../utils/api";
 
 const Home: NextPage = () => {
   const attachmentsQuery = api.example.getStock.useQuery();
   const attachments = attachmentsQuery.data;
-  const stock =
-    attachments?.stockCount || attachments?.stockCount === 0
-      ? attachments?.stockCount
-      : "Create Data";
+  const [stockCount, setStockCount] = useState(attachments?.stockCount || 0);
 
   const { mutate: increment } = api.example.increment.useMutation({
     onSuccess: async () => {
+      setStockCount(stockCount + 1);
       await attachmentsQuery.refetch();
     },
   });
 
   const { mutate: reset } = api.example.reset.useMutation({
     onSuccess: async () => {
+      setStockCount(0);
       await attachmentsQuery.refetch();
     },
   });
@@ -31,7 +31,7 @@ const Home: NextPage = () => {
       </Head>
       <main className="flex min-h-screen flex-col items-center justify-center gap-10 bg-gradient-to-b from-[#2e026d] to-[#15162c]">
         <h1 className="text-2xl font-semibold text-white">
-          Stock Number: {attachmentsQuery.isFetching ? "Loading" : stock}
+          Stock Number: {stockCount}
         </h1>
         <div className="flex gap-5">
           <button
