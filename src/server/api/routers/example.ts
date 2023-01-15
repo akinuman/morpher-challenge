@@ -24,4 +24,23 @@ export const exampleRouter = createTRPCRouter({
       });
     }
   }),
+  reset: publicProcedure.mutation(async ({ ctx }) => {
+    const stock = await ctx.prisma.example.findFirst();
+    if (!stock) {
+      await ctx.prisma.example.create({
+        data: {
+          stockCount: 0,
+        },
+      });
+    } else {
+      await ctx.prisma.example.update({
+        where: {
+          id: stock.id,
+        },
+        data: {
+          stockCount: 0,
+        },
+      });
+    }
+  }),
 });

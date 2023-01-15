@@ -10,7 +10,13 @@ const Home: NextPage = () => {
       ? attachments?.stockCount
       : "Create Data";
 
-  const { mutate } = api.example.increment.useMutation({
+  const { mutate: increment } = api.example.increment.useMutation({
+    onSuccess: async () => {
+      await attachmentsQuery.refetch();
+    },
+  });
+
+  const { mutate: reset } = api.example.reset.useMutation({
     onSuccess: async () => {
       await attachmentsQuery.refetch();
     },
@@ -27,12 +33,20 @@ const Home: NextPage = () => {
         <h1 className="text-2xl font-semibold text-white">
           Stock Number: {stock}
         </h1>
-        <button
-          onClick={() => mutate()}
-          className="rounded-lg bg-slate-400 px-5 py-1.5 font-semibold text-slate-800"
-        >
-          Increment
-        </button>
+        <div className="flex gap-5">
+          <button
+            onClick={() => increment()}
+            className="rounded-lg bg-slate-400 px-5 py-1.5 font-semibold text-slate-800"
+          >
+            Increment
+          </button>
+          <button
+            onClick={() => reset()}
+            className="rounded-lg bg-slate-400 px-5 py-1.5 font-semibold text-slate-800"
+          >
+            Reset
+          </button>
+        </div>
       </main>
     </>
   );
