@@ -1,0 +1,21 @@
+version: '3'
+services:
+  db:
+    image: postgres
+    environment:
+    - POSTGRES_USER=app
+    - POSTGRES_PASSWORD=app
+    - POSTGRES_DB=db
+    ports:
+    - 5432:5432
+    volumes:
+    - ./data:/var/lib/postgresql
+  app:
+    build: .
+    command: sh -c "npm run build && npm run start"
+    environment:
+      - DATABASE_URL=postgres://app:app@localhost:5432/db
+    ports:
+    - 3000:3000
+    depends_on:
+      - db
