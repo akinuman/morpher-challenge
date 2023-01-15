@@ -31,16 +31,18 @@ const Home: NextPage = () => {
       </Head>
       <main className="flex min-h-screen flex-col items-center justify-center gap-10 bg-gradient-to-b from-[#2e026d] to-[#15162c]">
         <h1 className="text-2xl font-semibold text-white">
-          Stock Number: {stock}
+          Stock Number: {attachmentsQuery.isFetching ? "Loading" : stock}
         </h1>
         <div className="flex gap-5">
           <button
+            disabled={attachmentsQuery.isFetching}
             onClick={() => increment()}
             className="rounded-lg bg-slate-400 px-5 py-1.5 font-semibold text-slate-800"
           >
             Increment
           </button>
           <button
+            disabled={attachmentsQuery.isFetching}
             onClick={() => reset()}
             className="rounded-lg bg-slate-400 px-5 py-1.5 font-semibold text-slate-800"
           >
