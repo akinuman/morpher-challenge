@@ -7,7 +7,7 @@
     "dev": "next dev",
     "postinstall": "prisma generate",
     "lint": "next lint",
-    "start": "npx prisma migrate dev && next start"
+    "start": "npx prisma migrate dev && next build && next start"
   },
   "dependencies": {
     "@prisma/client": "^4.8.0",
