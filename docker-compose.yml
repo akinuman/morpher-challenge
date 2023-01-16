@@ -12,19 +12,14 @@ services:
     volumes:
     - ./data:/var/lib/postgresql
   app:
-    depends_on:
-      - postgres
-    platform: "linux/amd64"
-    build:
-      context: .
-      dockerfile: Dockerfile
-      args:
-        NEXT_PUBLIC_CLIENTVAR: "clientvar"
-    working_dir: /app
+    build: .
+    command: sh -c "npx prisma migrate dev && npm run dev"
     ports:
-      - "3000:3000"
-    image: t3-app
-    environment:
-      - PORT=3000
-      - DATABASE_URL=postgres://app:app@postgres:5432/db
-   
+    - 3000:3000
+    volumes:
+    - ./:/app
+    links:
+    - postgres:postgres
+    depends_on:
+    - postgres
+    image: nodeimage
